@@ -1,18 +1,17 @@
 from PyQt5.QtWidgets import QApplication,QWidget,QLabel,QFileDialog,QListWidget,QPushButton,QTableWidget,QHBoxLayout,QVBoxLayout,QMessageBox
-from PyQt5.QtGui import QIntValidator
-import sys
+from PyQt5.QtGui import QIcon
+import sys,os
 from pulp import *
 import pandas as pd
 import numpy as np
 
-# dataset
-
 class Windo(QWidget):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("USTHB >> youcef >>Localisation_dentrepots ")
+        self.setWindowIcon(QIcon('Icon.ico'))
+        self.setWindowTitle("Localisation Dentrepots")
         self.setGeometry(200,100,1024,600)
-        self.file=QPushButton(self,text="select file")
+        self.file=QPushButton(self,text="Select")
         self.file.clicked.connect(self.getfile)
         self.status=QLabel(self,text="Status:")
         self.objectivefunction=QLabel(self,text="Objective function:")
@@ -25,7 +24,6 @@ class Windo(QWidget):
         self.show()
     def solve(self,filename):
         file = pd.ExcelFile(filename)
-
         livraisons = np.array(pd.read_excel(file, index_col=0, sheet_name=0))
         entrepots = np.array(pd.read_excel(file, index_col=0, sheet_name=1))
         centrales = np.array(pd.read_excel(file, index_col=0, sheet_name=2))
@@ -92,8 +90,10 @@ class Windo(QWidget):
             if s.varValue != 0:
                 self.liste.addItem(s.name+'='+str(s.varValue))
     def getfile(self):
-      fname = QFileDialog.getOpenFileName(self, 'Open file', 'c:\\')
-      self.solve(fname[0])
+      home_directory = os.getenv('HOME')
+      fname, _ = QFileDialog.getOpenFileName(self, 'Open file', home_directory)
+      if fname!='':
+        self.solve(fname)
     def layout(self):
         v=QVBoxLayout()
         h=QHBoxLayout()
