@@ -33,17 +33,7 @@ Run the main script:
 ```
 python main.py
 ```
-## Build
 
-Build the project:
-```
-python setup.py
-```
-## Installation File
-Click [here](https://drive.google.com/drive/folders/1iJlU3ugW2Gigr25lMNQxb5dYLXX6IfZv?usp=share_link) to download the installation file.
-
-
-
-![Example Image](./BranchAndBound.png)
+![Example Image](./LocalisationDentrepots.png)
 
 
