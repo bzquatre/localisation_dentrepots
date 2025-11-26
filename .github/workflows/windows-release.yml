@@ -29,16 +29,8 @@ jobs:
 
     # Build EXE using the variables
     - name: Build Windows EXE
-      run: |
-        pyinstaller \
-          --name "${{ env.EXE_NAME }}" \
-          --onefile \
-          --windowed \
-          --icon=Icon.ico \
-          --add-data "style.qss;." \
-          --add-data "Icon.ico;." \
-          app/main.py
-        dir dist
+      run: pyinstaller --name "localisation_dentrepots" --onefile --windowed --icon=Icon.ico --add-data "style.qss;." --add-data "Icon.ico;." app/main.py
+  
 
     # Upload .exe as GitHub artifact
     - name: Upload Build Artifact
