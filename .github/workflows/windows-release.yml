@@ -1,0 +1,60 @@
+name: Windows Build & Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    env:
+      APP_NAME: "Localisation Dentrepots"  
+      EXE_NAME: "localisation_dentrepots"  
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Setup Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.11"
+
+    - name: Install dependencies
+      run: pip install -r requirements.txt
+
+    - name: Install PyInstaller
+      run: pip install pyinstaller
+
+    # Build EXE using the variables
+    - name: Build Windows EXE
+      run: |
+        pyinstaller \
+          --name "${{ env.EXE_NAME }}" \
+          --onefile \
+          --windowed \
+          --icon=Icon.ico \
+          --add-data "style.qss;." \
+          --add-data "Icon.ico;." \
+          app/main.py
+        dir dist
+
+    # Upload .exe as GitHub artifact
+    - name: Upload Build Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ env.APP_NAME }}
+        path: dist/${{ env.EXE_NAME }}.exe
+
+    # Create GitHub Release
+    - name: Create GitHub Release
+      uses: softprops/action-gh-release@v2
+      with:
+        tag_name: ${{ github.ref_name }}
+        name: Release ${{ github.ref_name }}
+        draft: false
+        prerelease: false
+        files: dist/${{ env.EXE_NAME }}.exe
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
