@@ -6,8 +6,11 @@ on:
       - "v*"
 
 jobs:
+ 
   build-windows:
     runs-on: windows-latest
+    permissions:
+      contents: write
     env:
       APP_NAME: "Localisation Dentrepots"  
       EXE_NAME: "localisation_dentrepots"  
