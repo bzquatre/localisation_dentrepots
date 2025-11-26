@@ -31,7 +31,7 @@ pip install -r requirements.txt
 
 Run the main script:
 ```
-python main.py
+python app/main.py
 ```
 
 ![Example Image](./LocalisationDentrepots.png)
